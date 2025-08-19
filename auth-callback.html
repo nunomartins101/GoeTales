@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redirecionando...</title>
+    <script>
+        // Extrair parâmetros da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('access_token') || urlParams.get('token');
+        const type = urlParams.get('type');
+        
+        if (token && type === 'recovery') {
+            // Tentar abrir a app
+            const deepLink = `com.example.goetales://auth/callback?type=${type}&access_token=${token}`;
+            window.location.href = deepLink;
+            
+            // Fallback: mostrar instruções se não abrir
+            setTimeout(() => {
+                document.body.innerHTML = `
+                    <h2>Abrir no App GoeTales</h2>
+                    <p>Se o app não abriu automaticamente, toque no link:</p>
+                    <a href="${deepLink}">Abrir GoeTales</a>
+                    <p>Ou copie este link: ${deepLink}</p>
+                `;
+            }, 1000);
+        }
+    </script>
+</head>
+<body>
+    <p>Redirecionando para o app...</p>
+</body>
+</html>
