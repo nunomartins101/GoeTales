@@ -3,14 +3,14 @@
 <head>
     <title>Redirecionando...</title>
     <script>
-        // Extrair parâmetros da URL
+        // Extrair parâmetros da URL (conforme documentação Supabase)
         const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('access_token') || urlParams.get('token');
+        const token = urlParams.get('token_hash') || urlParams.get('access_token') || urlParams.get('token');
         const type = urlParams.get('type');
         
         if (token && type === 'recovery') {
             // Tentar abrir a app
-            const deepLink = `com.example.goetales://auth/callback?type=${type}&access_token=${token}`;
+            const deepLink = `com.example.goetales://auth/callback?type=${type}&token_hash=${token}`;
             window.location.href = deepLink;
             
             // Fallback: mostrar instruções se não abrir
@@ -22,6 +22,8 @@
                     <p>Ou copie este link: ${deepLink}</p>
                 `;
             }, 1000);
+        } else {
+            document.body.innerHTML = '<p>Parâmetros inválidos. Verifique o link.</p>';
         }
     </script>
 </head>
